@@ -33,7 +33,7 @@ PRODUCT_PACKAGES += \
 
 # Netlink
 PRODUCT_PACKAGES += \
-    libnl_2
+    libnl
 
 # Dbus
 PRODUCT_PACKAGES += \
@@ -47,49 +47,52 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     libglib
 
+# Hcidump
+PRODUCT_PACKAGES += \
+    hcidump
+
 # Libasound
 PRODUCT_PACKAGES += \
     libasound
 
-# Bluez 5.11 libs
+# Bluez
 PRODUCT_PACKAGES += \
-    libbtio \
-    libbluetooth
-
-# setup functions to initialize the encoder and decoder for A2DP streams
-PRODUCT_PACKAGES += \
-    libsbc
-
-# Bluez 5.11 daemon, android hal and haltest
-PRODUCT_PACKAGES += \
+    sap \
+    libsap_pts \
     bluetoothd \
-    bluetoothd-snoop \
-    bluetooth.default \
-    audio.a2dp.default \
-    haltest
-
-# Bluez 5.11 btmon
-PRODUCT_PACKAGES += \
-    btmon
-
-# Bluez 5.11 tools
-PRODUCT_PACKAGES += \
-    hciattach \
+    hstest \
+    l2test \
+    rctest \
+    scotest \
+    agent \
+    attest \
+    avtest \
+    bdaddr \
+    lmptest \
+    sdptest \
+    hidpts \
+    avinfo \
     hciconfig \
     hcitool \
-    hcidump \
-    rfcomm \
-    rctest \
-    l2test \
     l2ping \
-    sdptool \
-    ciptool \
-    bccmd \
-    btproxy
+    hciattach \
+    rfcomm \
+    btiotest
 
-# bt profile test (apk)
-#PRODUCT_PACKAGES += \
-#    BluetoothProfileTests
+# BT A2DP
+PRODUCT_PACKAGES += \
+    libasound_module_ctl_bluetooth \
+    libasound_module_pcm_bluetooth
+
+# libbt-vendor
+PRODUCT_PACKAGES += \
+    libbt-vendor
+
+# bluedroid, a2dp, BluetoothExt
+PRODUCT_PACKAGES += \
+    bluetooth.default \
+    audio.a2dp.default \
+    BluetoothExt
 
 # libaudioparameter
 PRODUCT_PACKAGES += \
@@ -122,15 +125,11 @@ PRODUCT_PACKAGES += \
     audio_policy.default \
     audio.usb.default
 
-# Screen recorder
-#PRODUCT_PACKAGES += \
-#    ScreenRecorder \
-#    libscreenrecorder
-
 # Permissions
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.camera.flash-autofocus.xml:system/etc/permissions/android.hardware.camera.flash-autofocus.xml \
     frameworks/native/data/etc/android.hardware.location.gps.xml:system/etc/permissions/android.hardware.location.gps.xml \
+    frameworks/native/data/etc/android.hardware.nfc.xml:system/etc/permissions/android.hardware.nfc.xml \
     frameworks/native/data/etc/android.hardware.sensor.accelerometer.xml:system/etc/permissions/android.hardware.sensor.accelerometer.xml \
     frameworks/native/data/etc/android.hardware.sensor.compass.xml:system/etc/permissions/android.hardware.sensor.compass.xml \
     frameworks/native/data/etc/android.hardware.sensor.gyroscope.xml:system/etc/permissions/android.hardware.sensor.gyroscope.xml \
@@ -141,6 +140,7 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.usb.accessory.xml:system/etc/permissions/android.hardware.usb.accessory.xml \
     frameworks/native/data/etc/android.hardware.usb.host.xml:system/etc/permissions/android.hardware.usb.host.xml \
     frameworks/native/data/etc/android.hardware.wifi.xml:system/etc/permissions/android.hardware.wifi.xml \
+    frameworks/native/data/etc/android.hardware.wifi.direct.xml:system/etc/permissions/android.hardware.wifi.direct.xml \
     frameworks/native/data/etc/android.software.sip.voip.xml:system/etc/permissions/android.software.sip.voip.xml \
     frameworks/native/data/etc/handheld_core_hardware.xml:system/etc/permissions/handheld_core_hardware.xml \
     packages/wallpapers/LivePicker/android.software.live_wallpaper.xml:system/etc/permissions/android.software.live_wallpaper.xml
@@ -159,7 +159,8 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/prebuilt/system/etc/wifi/wpa_supplicant.conf:system/etc/wifi/wpa_supplicant.conf \
     $(LOCAL_PATH)/prebuilt/system/etc/wifi/p2p_supplicant.conf:system/etc/wifi/p2p_supplicant.conf \
     $(LOCAL_PATH)/prebuilt/system/etc/init.d/01stesetup:system/etc/init.d/01stesetup \
-    $(LOCAL_PATH)/prebuilt/system/etc/init.d/10wireless:system/etc/init.d/10wireless \
+    $(LOCAL_PATH)/prebuilt/system/etc/init.d/10dhcpcd:system/etc/init.d/10dhcpcd \
+    $(LOCAL_PATH)/prebuilt/system/etc/init.d/10hostapd:system/etc/init.d/10hostapd \
     $(LOCAL_PATH)/prebuilt/system/etc/init.d/50selinuxrelabel:system/etc/init.d/50selinuxrelabel \
     $(LOCAL_PATH)/prebuilt/system/media/LMprec_508.emd:system/media/LMprec_508.emd \
     $(LOCAL_PATH)/prebuilt/system/media/PFFprec_600.emd:system/media/PFFprec_600.emd
@@ -185,19 +186,9 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/prebuilt/system/bin/install_wlan:system/bin/install_wlan \
     $(LOCAL_PATH)/prebuilt/system/etc/ste_modem.sh:system/etc/ste_modem.sh
 
-# New wifi firmwares
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/prebuilt/system/etc/firmware/sdd_sagrad_1091_1098.bin:system/etc/firmware/sdd_sagrad_1091_1098.bin \
-    $(LOCAL_PATH)/prebuilt/system/etc/firmware/wsm_22.bin:system/etc/firmware/wsm_22.bin \
-    $(LOCAL_PATH)/prebuilt/system/etc/firmware/LICENCE.cw1200:system/etc/firmware/LICENCE.cw1200
-
 # WiFi config utility
-PRODUCT_PACKAGES += \
-    iw
-
-# xperia specific wifi tethering
-PRODUCT_PACKAGES += \
-    hostapdpatcher
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/prebuilt/system/bin/iw:system/bin/iw \
 
 # GPS
 PRODUCT_COPY_FILES += \
@@ -244,7 +235,7 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
    $(LOCAL_PATH)/prebuilt/system/etc/cflashlib.cfg:system/etc/cflashlib.cfg \
    $(LOCAL_PATH)/prebuilt/system/etc/flashled_param_config.cfg:system/etc/flashled_param_config.cfg
-
+   
 # NFC Support
 PRODUCT_PACKAGES += \
     libnfc \
@@ -288,10 +279,10 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
    frameworks/native/data/etc/android.hardware.sensor.barometer.xml:system/etc/permissions/android.hardware.sensor.barometer.xml
 
-# This device is mdpi.  However the platform doesn't
-# currently contain all of the bitmaps at mdpi density so
-# we do this little trick to fall back to the mdpi version
-# if the mdpi doesn't exist.
+# This device is hdpi.  However the platform doesn't
+# currently contain all of the bitmaps at hdpi density so
+# we do this little trick to fall back to the hdpi version
+# if the hdpi doesn't exist.
 PRODUCT_AAPT_CONFIG := normal mdpi hdpi
 PRODUCT_AAPT_PREF_CONFIG := hdpi
 
@@ -309,7 +300,3 @@ PRODUCT_PROPERTY_OVERRIDES += \
     persist.sys.usb.config=mtp \
     wifi.interface=wlan0 \
     ro.sf.lcd_density=240
-
-#512MB ram devices(https://source.android.com/devices/low-ram.html)
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.config.low_ram=false

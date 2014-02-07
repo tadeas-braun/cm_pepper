@@ -24,7 +24,6 @@ import android.os.Message;
 import android.os.Parcel;
 import android.text.TextUtils;
 import android.telephony.Rlog;
-import java.util.ArrayList;
 
 /*
  * Custom NovaThor SimReady RIL for Sony Radio
@@ -85,31 +84,5 @@ public class SonyU8500RIL extends RIL implements CommandsInterface {
     setNetworkSelectionModeManual(String operatorNumeric, Message response) {
         setNetworkSelectionMode(operatorNumeric, response);
     }
-
-    @Override
-    protected Object
-    responseOperatorInfos(Parcel p) {
-        String strings[] = (String [])responseStrings(p);
-        ArrayList<OperatorInfo> ret;
-
-        if (strings.length % 5 != 0) {
-            throw new RuntimeException(
-                "RIL_REQUEST_QUERY_AVAILABLE_NETWORKS: invalid response. Got "
-                + strings.length + " strings, expected multible of 5");
-        }
-
-        ret = new ArrayList<OperatorInfo>(strings.length / 5);
-
-        for (int i = 0 ; i < strings.length ; i += 5) {
-           // str[i+4] is rat, ignore it
-            ret.add (
-                new OperatorInfo(
-                    strings[i+0],
-                    strings[i+1],
-                    strings[i+2],
-                    strings[i+3]));
-        }
-
-        return ret;
-    }
 }
+

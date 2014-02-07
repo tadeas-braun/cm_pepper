@@ -4,7 +4,11 @@ USE_CAMERA_STUB := true
 -include vendor/sony/pepper/BoardConfigVendor.mk
 
 TARGET_SPECIFIC_HEADER_PATH := \
-    device/sony/pepper/include
+    device/sony/pepper/include \
+    device/sony/pepper/hardware \
+    hardware/semc/bluetooth/glib \
+    hardware/semc/bluetooth/bluez/lib \
+    hardware/semc/bluetooth/bluez/btio
 
 TARGET_NO_BOOTLOADER := true
 TARGET_NO_RADIOIMAGE := true
@@ -31,42 +35,31 @@ TARGET_GLOBAL_CPPFLAGS += -mfpu=neon -mfloat-abi=softfp
 BOARD_HAVE_BLUETOOTH := true
 BOARD_HAVE_BLUETOOTH_STE := true
 COMMON_GLOBAL_CFLAGS += -DSTE_BT
+BOARD_BLUEDROID_VENDOR_CONF := device/sony/pepper/hardware/bluetooth/vnd_u8500.txt
+BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/sony/pepper/hardware/bluetooth/include
 
 # Audio
 BOARD_USES_GENERIC_AUDIO := false
 BOARD_USES_ALSA_AUDIO := true
 COMMON_GLOBAL_CFLAGS += -DSTE_AUDIO
 # hack for audio
-COMMON_GLOBAL_CFLAGS += -DMR0_AUDIO_BLOB -DMR1_AUDIO_BLOB
+COMMON_GLOBAL_CFLAGS += -DMR0_AUDIO_BLOB
 # seems needed for sink latency
 BOARD_USES_LIBMEDIA_WITH_AUDIOPARAMETER := true
-# kitkat
-BOARD_HAVE_PRE_KITKAT_AUDIO_BLOB := true
 
 # WIFI
 BOARD_WLAN_DEVICE := cw1200
 WPA_SUPPLICANT_VERSION := VER_0_8_X
-CONFIG_DRIVER_NL80211 := true
 BOARD_WPA_SUPPLICANT_DRIVER := NL80211
-BOARD_HOSTAPD_DRIVER := NL80211
-USES_TI_MAC80211 := true
-COMMON_GLOBAL_CFLAGS += -DUSES_TI_MAC80211 -DCONFIG_DRIVER_NL80211
 BOARD_WPA_SUPPLICANT_PRIVATE_LIB := private_lib_nl80211_cmd
+BOARD_HOSTAPD_DRIVER := NL80211
 BOARD_HOSTAPD_PRIVATE_LIB := private_lib_nl80211_cmd
+BOARD_SOFTAP_DEVICE_TI := NL80211
 
 # Graphics
 USE_OPENGL_RENDERER := true
 BOARD_EGL_CFG := device/sony/pepper/prebuilt/system/lib/egl/egl.cfg
 COMMON_GLOBAL_CFLAGS += -DSTE_HARDWARE
-
-# kitkat libui
-BOARD_HAVE_PIXEL_FORMAT_INFO := true
-
-# libbinder - testing only
-#BOARD_NEEDS_MEMORYHEAPPMEM := true
-
-# libutils backward compatibility for hals
-COMMON_GLOBAL_CFLAGS += -DNEEDS_VECTORIMPL_SYMBOLS
 
 # jb camera
 COMMON_GLOBAL_CFLAGS += -DICS_CAMERA_BLOB
@@ -74,10 +67,6 @@ COMMON_GLOBAL_CFLAGS += -DICS_CAMERA_BLOB
 # surfaceflinger support for Xperia Sola,Go...
 BOARD_EGL_NEEDS_LEGACY_FB := true
 COMMON_GLOBAL_CFLAGS += -DEGL_NEEDS_FNW
-# surfaceflinger - testing only
-#TARGET_DISABLE_TRIPLE_BUFFERING := true
-#NUM_FRAMEBUFFER_SURFACE_BUFFERS := 2
-#TARGET_RUNNING_WITHOUT_SYNC_FRAMEWORK := true
 
 # Fm Radio
 #BOARD_USES_STE_FM := true
@@ -101,16 +90,10 @@ BOARD_USES_MMCUTILS := true
 BOARD_HAS_NO_MISC_PARTITION := true
 
 # cwm specific
-RECOVERY_NAME := CWM-Pepper
 BOARD_CUSTOM_RECOVERY_KEYMAPPING := ../../device/sony/pepper/recovery/recovery-keys.c
-BOARD_USE_CUSTOM_RECOVERY_FONT := \"lucidaconsole_10x18.h\"
+BOARD_USE_CUSTOM_RECOVERY_FONT := \"roboto_10x18.h\"
 TARGET_RECOVERY_FSTAB = device/sony/pepper/prebuilt/root/fstab.st-ericsson
 RECOVERY_FSTAB_VERSION := 2
-
-# uncoment to enable back button in cwm (only if you commented XPERIA_CWM_TOUCH)
-#BOARD_HAS_NO_SELECT_BUTTON := true
-# coment this if you no want xperia touch enabled cwm
-COMMON_GLOBAL_CFLAGS += -DXPERIA_CWM_TOUCH
 
 TARGET_USE_CUSTOM_LUN_FILE_PATH := "/sys/devices/platform/musb-ux500.0/musb-hdrc/gadget/lun%d/file"
 
@@ -121,10 +104,11 @@ TARGET_KERNEL_CUSTOM_TOOLCHAIN := arm-eabi-4.4.3
 BOARD_KERNEL_BASE := 0x0
 BOARD_RECOVERY_BASE := 0x0
 BOARD_KERNEL_PAGESIZE := 2048
-BOARD_KERNEL_CMDLINE := cachepolicy=writealloc noinitrd init=init board_id=1 logo.nologo root=/dev/ram0 rw rootwait console=null androidboot.console=null androidboot.hardware=st-ericsson mem=96M@0 mem_mtrace=15M@96M mem_mshared=1M@111M mem_modem=16M@112M mem=32M@128M mem_issw=1M@160M hwmem=71M@161M mem=280M@232M mpcore_wdt.mpcore_margin=359 end audit=1
+BOARD_KERNEL_CMDLINE := cachepolicy=writealloc noinitrd init=init board_id=1 logo.nologo root=/dev/ram0 rw rootwait console=null androidboot.console=null androidboot.hardware=st-ericsson mem=96M@0 mem_mtrace=15M@96M mem_mshared=1M@111M mem_modem=16M@112M mem=32M@128M mem_issw=1M@160M hwmem=71M@161M mem=280M@232M mpcore_wdt.mpcore_margin=359 end lpj=24019 audit=1
 BOARD_MKBOOTIMG_ARGS := --ramdisk_offset 0x01000000
 
 # Partition information
+BOARD_VOLD_EMMC_SHARES_DEV_MAJOR := true
 BOARD_VOLD_MAX_PARTITIONS := 16
 
 # partition size is dec=16777216 hex=01000000 so 0x01000000 is correct one!
@@ -137,6 +121,7 @@ BOARD_FLASH_BLOCK_SIZE := 131072
 
 COMMON_GLOBAL_CFLAGS += -DNEW_NOTIFICATION
 
+BOARD_HAS_NO_SELECT_BUTTON := true
 TARGET_USERIMAGES_USE_EXT4 := true
 
 BOARD_SDCARD_INTERNAL_DEVICE := /dev/block/mmcblk0p14
