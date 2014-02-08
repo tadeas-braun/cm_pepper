@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2011 The Android Open-Source Project
+# Copyright (C) 2014 OmniRom for pepper by tadeas482
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,6 +14,4 @@
 # limitations under the License.
 #
 
-PRODUCT_MAKEFILES := \
-    $(LOCAL_DIR)/omni_pepper.mk \
-    $(LOCAL_DIR)/aosp_pepper.mk
+$(call inherit-product, device/sony/pepper/full_pepper.mk)
