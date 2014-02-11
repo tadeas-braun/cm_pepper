@@ -99,6 +99,10 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     lights.montblanc
 
+# Power Module
+PRODUCT_PACKAGES += \
+    power.montblanc
+
 # Misc
 PRODUCT_PACKAGES += \
     com.android.future.usb.accessory
