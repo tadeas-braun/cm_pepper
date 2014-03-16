@@ -312,7 +312,8 @@ PRODUCT_PROPERTY_OVERRIDES += \
     sys.mem.max_hidden_apps=10 \
     persist.sys.usb.config=mtp \
     wifi.interface=wlan0 \
-    ro.sf.lcd_density=240
+    ro.sf.lcd_density=240 \
+    ro.com.google.clientidbase.ms=android-sonymobile
 
 #512MB ram devices(https://source.android.com/devices/low-ram.html)
 PRODUCT_PROPERTY_OVERRIDES += \
