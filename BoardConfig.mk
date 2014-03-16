@@ -94,7 +94,7 @@ BOARD_RIL_CLASS := ../../../device/sony/pepper/telephony-common/
 
 # Custom boot
 TARGET_PROVIDES_INIT_RC := true
-TARGET_RECOVERY_PRE_COMMAND := "touch /cache/recovery/boot;sync;"
+TARGET_RECOVERY_PRE_COMMAND := "/system/bin/touch /cache/recovery/boot; /system/bin/sync;"
 BOARD_CUSTOM_BOOTIMG_MK := device/sony/pepper/custombootimg.mk
 TARGET_RELEASETOOL_OTA_FROM_TARGET_SCRIPT := device/sony/pepper/releasetools/semc_ota_from_target_files
 
