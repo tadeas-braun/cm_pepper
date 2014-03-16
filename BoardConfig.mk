@@ -71,6 +71,9 @@ COMMON_GLOBAL_CFLAGS += -DNEEDS_VECTORIMPL_SYMBOLS
 # jb camera
 COMMON_GLOBAL_CFLAGS += -DICS_CAMERA_BLOB
 
+# STE healthd HAL
+BOARD_HAL_STATIC_LIBRARIES := libhealthd.montblanc
+
 # surfaceflinger support for Xperia Sola,Go...
 BOARD_EGL_NEEDS_LEGACY_FB := true
 COMMON_GLOBAL_CFLAGS += -DEGL_NEEDS_FNW
